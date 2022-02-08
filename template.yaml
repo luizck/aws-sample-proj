@@ -1,0 +1,131 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+
+  ##########################################################################
+  #   LAMBDA FUNCTION                                                      #
+  ##########################################################################
+  SampleLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 60
+      Tracing: Active
+      MemorySize: 2048
+      Runtime: java11
+      FunctionName: SampleLambdaFunction
+      Handler: com.exemplo.SampleLambda::handleRequest
+      CodeUri: sample-lambda/target/sample-lambda.zip
+      Environment:
+        Variables:
+          TZ: America/Sao_Paulo
+#      Events:
+#        ConjuntosUnidadesRecebiveisEndpoint:
+#          Type: Api
+#          Properties:
+#            RestApiId: !Ref Api
+#            Path: /
+#            Method: POST
+
+  SampleLambdaFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/SampleLambdaFunction
+      RetentionInDays: 3
+
+  ##########################################################################
+  # API Gateway
+  ##########################################################################
+  RestApi:
+    Type : AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub ${AWS::StackName}-api
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  Deployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - LambdaPostMethod
+    Properties:
+      RestApiId: !Ref RestApi
+      StageName: v1
+      StageDescription:
+        TracingEnabled: True
+        LoggingLevel: INFO
+        MetricsEnabled: True
+
+#  V1Stage:
+#    Type: AWS::ApiGateway::Stage
+#    Properties:
+#      StageName: v1
+#      RestApiId: !Ref RestApi
+#      DeploymentId: !Ref Deployment
+
+  LambdaPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref RestApi
+      ResourceId: !GetAtt RestApi.RootResourceId
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Credentials: !GetAtt ApiGatewayRole.Arn
+        Uri: !Sub >-
+          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SampleLambdaFunction.Arn}/invocations
+
+  ##########################################################################
+  #   API GATEWAY ROLE WITH PERMISSIONS TO START EXECUTING STEP FUNCTION   #
+  ##########################################################################
+  ApiGatewayRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      Path: !Join [ "", [ "/", !Ref "AWS::StackName", "/" ] ]
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: AllowApiGatewayServiceToAssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+                #                - !Sub states.${AWS::Region}.amazonaws.com
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        #        - PolicyName: CallStepFunctions
+        #          PolicyDocument:
+        #            Version: 2012-10-17
+        #            Statement:
+        #              - Effect: Allow
+        #                Action:
+        #                  - "states:StartSyncExecution"
+        #                Resource: !GetAtt StepFunctionStateMachine.Arn
+        - PolicyName: LambdaExecute
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "lambda:InvokeFunction"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogDelivery
+                  - logs:GetLogDelivery
+                  - logs:UpdateLogDelivery
+                  - logs:DeleteLogDelivery
+                  - logs:ListLogDeliveries
+                  - logs:PutResourcePolicy
+                  - logs:DescribeResourcePolicies
+                  - logs:DescribeLogGroups
+                Resource: "*"
+
+Outputs:
+  ApiforSyncWFUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"
