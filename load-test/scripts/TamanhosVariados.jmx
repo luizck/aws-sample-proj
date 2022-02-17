@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">2</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">2</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">0</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="GZIP HTTP Header Manager" enabled="false">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Encoding</stringProp>
+              <stringProp name="Header.value">gzip</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">isSync</stringProp>
+              <stringProp name="Header.value">true</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">qtdSteps</stringProp>
+              <stringProp name="Header.value">1</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="StepFunctions Host" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="host" elementType="Argument">
+              <stringProp name="Argument.name">host</stringProp>
+              <stringProp name="Argument.value">wbmg5e24d7.execute-api.sa-east-1.amazonaws.com</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="path" elementType="Argument">
+              <stringProp name="Argument.name">path</stringProp>
+              <stringProp name="Argument.value">/v1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Zeebe Host" enabled="false">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="host" elementType="Argument">
+              <stringProp name="Argument.name">host</stringProp>
+              <stringProp name="Argument.value">a45a5ec12fc3446dd8f29ca86f82c7f1-5160455.sa-east-1.elb.amazonaws.com</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="path" elementType="Argument">
+              <stringProp name="Argument.name">path</stringProp>
+              <stringProp name="Argument.value">poc-orquestrador-perf/api/init-instance</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Post Request" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${json}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${path}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="orquestrador" elementType="Argument">
+                <stringProp name="Argument.name">orquestrador</stringProp>
+                <stringProp name="Argument.value">stepfunctions</stringProp>
+                <stringProp name="Argument.desc">stepfunctions ou zeebe</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </Arguments>
+          <hashTree/>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Distribuicao Tamanho" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import com.keithschwarz.AliasMethod;
+import java.util.Arrays;
+
+// Tamanhos dos payloads
+//def sizes = [256, 224, 192, 160, 128, 96, 64, 32, 16] as int[];
+//def sizes = [256, 256, 256, 256, 256, 256, 256, 256, 256] as int[];
+//def sizes = [16, 16, 16, 16, 16, 16, 16, 16, 16] as int[];
+//def sizes = [1, 1, 1, 1, 1, 1, 1, 1, 1] as int[];
+//def sizes = [64, 64, 64, 64, 64, 64, 64, 64, 64] as int[];
+//def sizes = [32, 32, 32, 32, 32, 32, 32, 32, 32] as int[];
+def sizes = [16, 16, 16, 16, 16, 1, 1, 1, 1] as int[];
+
+
+// Percentuais de distribuição dos tamanhos
+def distribution = [0.05d, 0.10d, 0.15d, 0.20d, 0.25d, 0.20d, 0.15d, 0.10d, 0.05d] as Double[]; 
+
+AliasMethod aliasMethod = props.get(&quot;ALIAS_METHOD&quot;);
+if (aliasMethod == null) {
+	aliasMethod = new AliasMethod(Arrays.asList(distribution));
+	props.put(&quot;ALIAS_METHOD&quot;, aliasMethod);
+}
+
+int size = sizes[aliasMethod.next()] * 1024;
+vars.put(&quot;size&quot;, String.valueOf(size));
+
+log.info(&quot;{}&quot;, size);</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Gera Registros" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+import java.text.DecimalFormat;
+
+int REQUEST_MAX_SIZE = 256 * 1024;
+int STEPS = 10;
+
+String dtPrevLiq = DateTimeFormatter.ofPattern(&quot;yyy-MM-dd&quot;).format(LocalDate.now());
+Random random  = new Random();
+DecimalFormat df = new DecimalFormat(&quot;####.##&quot;);
+
+int maxSize = Integer.valueOf(vars.get(&quot;size&quot;));
+
+String sizes = &quot;[&quot;;
+for (int i=0; i&lt;STEPS; i++) {
+	sizes += maxSize;
+	if (i &lt; STEPS-1) sizes += &quot;,&quot;;
+}
+sizes += &quot;]&quot;;
+
+String tempos = &quot;[&quot;;
+for (int i=0; i&lt;STEPS; i++) {
+	tempos += &quot;0&quot;;
+	if (i &lt; STEPS-1) tempos += &quot;,&quot;;
+}
+tempos += &quot;]&quot;;
+
+StringBuilder records = new StringBuilder();
+records.append(&quot;[&quot;);
+records.append(createRecord(random, dtPrevLiq, df));
+
+String json = &quot;{\&quot;orquestrador\&quot;: \&quot;${orquestrador}\&quot;,\&quot;payloadInicial\&quot;:[],\&quot;tamanhoPayloadEntreSteps\&quot;:&quot; + sizes + &quot;,\&quot;tempoDeSleep\&quot;:&quot; + tempos + &quot;}&quot;;
+
+int recordSize = records.length() - 1;
+
+if (maxSize / (double) REQUEST_MAX_SIZE &gt; 0.96) {
+	maxSize = (int) (REQUEST_MAX_SIZE * 0.96);
+}
+int maxRecords = (maxSize / recordSize);
+
+for (int i=1; i&lt;maxRecords; i++) {
+  records.append(&quot;,&quot;);
+  records.append(createRecord(random, dtPrevLiq, df));
+}
+records.append(&quot;]&quot;);
+
+
+json = &quot;{\&quot;orquestrador\&quot;: \&quot;${orquestrador}\&quot;,\&quot;payloadInicial\&quot;:&quot; + records.toString() + &quot;,\&quot;tamanhoPayloadEntreSteps\&quot;:&quot; + sizes + &quot;,\&quot;tempoDeSleep\&quot;:&quot; + tempos + &quot;}&quot;;
+
+//System.out.println(json);
+
+vars.put(&quot;json&quot;, json);
+
+//System.out.println(records);
+System.out.println(String.format(&quot;Tamanho total em bytes: %d&quot;, json.length()));
+System.out.println(String.format(&quot;Tamanho por registro em bytes: %d&quot;, recordSize));
+System.out.println(String.format(&quot;Quantidade de registros: %d&quot;, maxRecords));
+
+
+static final String createRecord(Random random, String dtPrevLiq, DecimalFormat df) {
+   StringBuilder record = new StringBuilder();
+   record.append(&quot;{&quot;);
+   record.append(&quot;\&quot;cnpjOuCnpjBaseOuCpfTitlar\&quot;:\&quot;&quot;).append(String.format(&quot;%014d&quot;, randomInt(random,1, 999999999))).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;cnpjOuCpfTitlarCt\&quot;:\&quot;&quot;).append(String.format(&quot;%014d&quot;, randomInt(random,1, 999999999))).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;ispbBcoRecbdr\&quot;:\&quot;&quot;).append(String.format(&quot;%08d&quot;, randomInt(random,1, 99999999))).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;tpCt\&quot;:\&quot;CC\&quot;,&quot;);
+   record.append(&quot;\&quot;ag\&quot;:\&quot;&quot;).append(String.format(&quot;%04d&quot;, randomInt(random,1, 1000))).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;ct\&quot;:\&quot;&quot;).append(String.format(&quot;%09d&quot;, randomInt(random,1, 999999999))).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;cnpjCreddrSub\&quot;:\&quot;&quot;).append(String.format(&quot;%014d&quot;, randomInt(random,1, 999999999))).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;cnpjOuCpfUsuFinalRecbdr\&quot;:\&quot;&quot;).append(String.format(&quot;%014d&quot;, randomInt(random,1, 999999999))).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;codInstitdrArrajPgto\&quot;:\&quot;&quot;).append(&quot;006&quot;).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;dtPrevtLiquid\&quot;:\&quot;&quot;).append(dtPrevLiq).append(&quot;\&quot;,&quot;);
+   record.append(&quot;\&quot;vlrNegcd\&quot;:&quot;).append(df.format(randomDouble(random,1000.0, 9999.99)));
+   record.append(&quot;}&quot;);
+   return record.toString();
+}
+
+
+static int randomInt(Random random, int low, int high) {
+   return random.nextInt(high - low) + low;
+}
+
+static double randomDouble(Random random, double low, double high) {
+   return low + random.nextDouble() * (high - low);
+}</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Compressao" enabled="false">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import org.apache.commons.io.IOUtils;
+import java.util.zip.GZIPOutputStream;
+
+String bodyString = vars.get(&quot;json&quot;)
+byte [] requestBody = bodyString.getBytes();
+
+ByteArrayOutputStream out = new ByteArrayOutputStream(requestBody.length);
+GZIPOutputStream gzip = new GZIPOutputStream(out);
+gzip.write(requestBody);
+gzip.close();
+
+//sampler.getArguments().getArgument(0).setValue(out.toString(0));
+vars.put(&apos;json&apos;, out.toString(0));</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
+            <stringProp name="Assertion.test_field">SizeAssertion.response_data</stringProp>
+            <stringProp name="SizeAssertion.size">0</stringProp>
+            <intProp name="SizeAssertion.operator">3</intProp>
+          </SizeAssertion>
+          <hashTree/>
+          <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="false">
+            <stringProp name="Assertion.test_field">SizeAssertion.response_data</stringProp>
+            <stringProp name="SizeAssertion.size">300000</stringProp>
+            <intProp name="SizeAssertion.operator">4</intProp>
+          </SizeAssertion>
+          <hashTree/>
+        </hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
